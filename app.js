@@ -36,7 +36,6 @@ function moveFrog(e){ //pass event through function
 
     squares[currentIndex].classList.add('frog')
 }
-document.addEventListener('keyup', moveFrog)
 
 
 function autoMoveElements() {
@@ -158,5 +157,17 @@ function win() {
         document.removeEventListener('keyup', moveFrog)
     }
 }
-timerId = setInterval(autoMoveElements, 1000)
+
+startPauseButton.addEventListener('click', () => {//callback function
+    if (timerId) {//at the very start of the game, no timerId, so game starts on else
+        clearInterval(timerId)
+        timerId = null
+        document.removeEventListener('keyup', moveFrog)//if game stopped, also frog should not move
+    } else {
+        timerId = setInterval(autoMoveElements, 1000)
+        document.addEventListener('keyup', moveFrog)//moving of frog is only possible when we press start button
+
+    }
+}
+
 
