@@ -4,6 +4,9 @@ const startPauseButton = document.querySelector('#start-pause-button')
 const squares = document.querySelectorAll('.grid div')
 const logsLeft = document.querySelectorAll('.log-left')
 const logsRight = document.querySelectorAll('.log-right')
+const carsLeft = document.querySelectorAll('.car-left')
+const carsRight = document.querySelectorAll('.car-right')
+
 let currentIndex = 76 //read up on this - if 0 = identifies the first div (i.e. zero), that is square in top left corner 
 const width = 9 //we know that the width is 9 as the board has 9 divs in a row
 
@@ -34,9 +37,11 @@ function moveFrog(e){ //pass event through function
 document.addEventListener('keyup', moveFrog)
 
 
-function autoMoveLogs() {
+function autoMoveElements() {
     logsLeft.forEach(logLeft => moveLogLeft(logLeft))//call each logLeft (i.e. div with class .log-left) wich are in the const logsleft as defined above and pass it through moveLogLeft function
     logsRight.forEach(logRight => moveLogRight(logRight))
+    carsLeft.forEach(carLeft => moveCarLeft(carLeft))
+    carsRight.forEach(carRight => moveCarRight(carRight))
 }
 
 
@@ -90,4 +95,38 @@ function moveLogRight(logRight) {
     }
 }
 
-setInterval(autoMoveLogs, 1000)
+function moveCarLeft(carLeft) {
+    switch(true) {
+        case carLeft.classList.contains('c1')://getting all divs under logleft and check for each if it has a class of l1
+            carLeft.classList.remove('c1')
+            carLeft.classList.add('c2')
+            break
+        case carLeft.classList.contains('c2')://we could go though all 9 divs with this, but visually it is enough to do only five(check what is happening in the HTML with these divs and I will notice)
+            carLeft.classList.remove('c2')
+            carLeft.classList.add('c3')
+            break
+        case carLeft.classList.contains('c3'):
+                carLeft.classList.remove('c3')
+                carLeft.classList.add('c1')
+                break
+    }
+}
+
+
+function moveCarRight(carRight) {
+    switch(true) {
+        case carRight.classList.contains('c1')://getting all divs under logleft and check for each if it has a class of l1
+            carRight.classList.remove('c1')
+            carRight.classList.add('c3')
+            break
+        case carRight.classList.contains('c2')://we could go though all 9 divs with this, but visually it is enough to do only five(check what is happening in the HTML with these divs and I will notice)
+            carRight.classList.remove('c2')
+            carRight.classList.add('c1')
+            break
+        case carRight.classList.contains('c3'):
+            carRight.classList.remove('c3')
+            carRight.classList.add('c2')
+            break
+    }
+}
+setInterval(autoMoveElements, 1000)
