@@ -10,7 +10,7 @@ const carsRight = document.querySelectorAll('.car-right')
 let currentIndex = 76 //read up on this - if 0 = identifies the first div (i.e. zero), that is square in top left corner 
 const width = 9 //we know that the width is 9 as the board has 9 divs in a row
 let timerId
-let currentTime = 10
+let currentTime = 20
 
 
 function moveFrog(e){ //pass event through function
@@ -40,6 +40,8 @@ document.addEventListener('keyup', moveFrog)
 
 
 function autoMoveElements() {
+    currentTime--
+    timeLeftDisplay.textContent = currentTime 
     logsLeft.forEach(logLeft => moveLogLeft(logLeft))//call each logLeft (i.e. div with class .log-left) wich are in the const logsleft as defined above and pass it through moveLogLeft function
     logsRight.forEach(logRight => moveLogRight(logRight))
     carsLeft.forEach(carLeft => moveCarLeft(carLeft))
@@ -138,7 +140,8 @@ function lose() {
     if (
         squares[currentIndex].classList.contains('c1') ||//check whether currentIndex, i.e. the frog, is on c1, l4, or l5 divs
         squares[currentIndex].classList.contains('l4') ||
-        squares[currentIndex].classList.contains('l5') 
+        squares[currentIndex].classList.contains('l5') ||
+        currentTime <= 0
         ){
         resultDisplay.textContent = 'You lose!'
         clearInterval(timerId)//passes the timerId which is the setInterval/1s through clearInterval
