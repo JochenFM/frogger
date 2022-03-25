@@ -9,6 +9,8 @@ const carsRight = document.querySelectorAll('.car-right')
 
 let currentIndex = 76 //read up on this - if 0 = identifies the first div (i.e. zero), that is square in top left corner 
 const width = 9 //we know that the width is 9 as the board has 9 divs in a row
+let timerId
+let currentTime = 10
 
 
 function moveFrog(e){ //pass event through function
@@ -42,6 +44,8 @@ function autoMoveElements() {
     logsRight.forEach(logRight => moveLogRight(logRight))
     carsLeft.forEach(carLeft => moveCarLeft(carLeft))
     carsRight.forEach(carRight => moveCarRight(carRight))
+    lose()//each time everything moves I also want to check for a lose, ever 1s
+    win()
 }
 
 
@@ -129,4 +133,27 @@ function moveCarRight(carRight) {
             break
     }
 }
-setInterval(autoMoveElements, 1000)
+
+function lose() {
+    if (
+        squares[currentIndex].classList.contains('c1') ||//check whether currentIndex, i.e. the frog, is on c1, l4, or l5 divs
+        squares[currentIndex].classList.contains('l4') ||
+        squares[currentIndex].classList.contains('l5') 
+        ){
+        resultDisplay.textContent = 'You lose!'
+        clearInterval(timerId)//passes the timerId which is the setInterval/1s through clearInterval
+        squares[currentIndex].classList.remove('frog'),
+        document.removeEventListener('keyup', moveFrog)
+    }
+}
+
+
+function win() {
+    if(squares[currentIndex].classList.contains('ending-block')){
+        resultDisplay.textContent = 'You win!'
+        clearInterval(timerId)//passes the timerId which is the setInterval/1s through clearInterval
+        document.removeEventListener('keyup', moveFrog)
+    }
+}
+timerId = setInterval(autoMoveElements, 1000)
+
