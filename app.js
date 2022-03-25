@@ -10,6 +10,7 @@ const carsRight = document.querySelectorAll('.car-right')
 let currentIndex = 76 //read up on this - if 0 = identifies the first div (i.e. zero), that is square in top left corner 
 const width = 9 //we know that the width is 9 as the board has 9 divs in a row
 let timerId
+let outcomeTimerId
 let currentTime = 20
 
 
@@ -45,10 +46,14 @@ function autoMoveElements() {
     logsRight.forEach(logRight => moveLogRight(logRight))
     carsLeft.forEach(carLeft => moveCarLeft(carLeft))
     carsRight.forEach(carRight => moveCarRight(carRight))
-    lose()//each time everything moves I also want to check for a lose, ever 1s
-    win()
+   
 }
 
+
+function checkOutComes() {
+    lose()
+    win()
+}
 
 function moveLogLeft(logLeft) {
     switch(true) {
@@ -144,6 +149,7 @@ function lose() {
         ){
         resultDisplay.textContent = 'You lose!'
         clearInterval(timerId)//passes the timerId which is the setInterval/1s through clearInterval
+        clearInterval(outcomeTimerId)
         squares[currentIndex].classList.remove('frog'),
         document.removeEventListener('keyup', moveFrog)
     }
@@ -154,6 +160,7 @@ function win() {
     if(squares[currentIndex].classList.contains('ending-block')){
         resultDisplay.textContent = 'You win!'
         clearInterval(timerId)//passes the timerId which is the setInterval/1s through clearInterval
+        clearInterval(outcomeTimerId)
         document.removeEventListener('keyup', moveFrog)
     }
 }
@@ -161,13 +168,14 @@ function win() {
 startPauseButton.addEventListener('click', () => {//callback function
     if (timerId) {//at the very start of the game, no timerId, so game starts on else
         clearInterval(timerId)
+        clearInterval(outcomeTimerId)
+        outcomeTimerId = null
         timerId = null
         document.removeEventListener('keyup', moveFrog)//if game stopped, also frog should not move
     } else {
         timerId = setInterval(autoMoveElements, 1000)
+        outcomeTimerId = setInterval(checkOutComes, 50)//check for win or lose - see function above - very 50ms
         document.addEventListener('keyup', moveFrog)//moving of frog is only possible when we press start button
 
     }
-}
-
-
+})
