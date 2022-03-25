@@ -2,7 +2,8 @@ const timeLeftDisplay = document.querySelector('#time-left')
 const resultDisplay = document.querySelector('#result')
 const startPauseButton = document.querySelector('#start-pause-button')
 const squares = document.querySelectorAll('.grid div')
-const logsleft = document.querySelectorAll('.log-left')
+const logsLeft = document.querySelectorAll('.log-left')
+const logsRight = document.querySelectorAll('.log-right')
 let currentIndex = 76 //read up on this - if 0 = identifies the first div (i.e. zero), that is square in top left corner 
 const width = 9 //we know that the width is 9 as the board has 9 divs in a row
 
@@ -34,7 +35,8 @@ document.addEventListener('keyup', moveFrog)
 
 
 function autoMoveLogs() {
-    logsleft.forEach(logLeft => moveLogLeft(logLeft))//call each logLeft (i.e. div with class .log-left) wich are in the const logsleft as defined above and pass it through moveLogLeft function
+    logsLeft.forEach(logLeft => moveLogLeft(logLeft))//call each logLeft (i.e. div with class .log-left) wich are in the const logsleft as defined above and pass it through moveLogLeft function
+    logsRight.forEach(logRight => moveLogRight(logRight))
 }
 
 
@@ -59,6 +61,31 @@ function moveLogLeft(logLeft) {
         case logLeft.classList.contains('l5'):
                 logLeft.classList.remove('l5')
                 logLeft.classList.add('l1')
+                break
+    }
+}
+
+function moveLogRight(logRight) {
+    switch(true) {
+        case logRight.classList.contains('l1')://getting all divs under logleft and check for each if it has a class of l1
+            logRight.classList.remove('l1')
+            logRight.classList.add('l5')
+            break
+        case logRight.classList.contains('l2')://we could go though all 9 divs with this, but visually it is enough to do only five(check what is happening in the HTML with these divs and I will notice)
+            logRight.classList.remove('l2')
+            logRight.classList.add('l1')
+            break
+        case logRight.classList.contains('l3'):
+            logRight.classList.remove('l3')
+            logRight.classList.add('l2')
+                break
+        case logRight.classList.contains('l4'):
+            logRight.classList.remove('l4')
+            logRight.classList.add('l3')
+                break
+        case logRight.classList.contains('l5'):
+            logRight.classList.remove('l5')
+            logRight.classList.add('l4')
                 break
     }
 }
